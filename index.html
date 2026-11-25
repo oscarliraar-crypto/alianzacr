@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Alianza Sopaipas_Chile • chile • mirmidones — Gestor Competitivo Oficial</title>
+  <style>
+    :root {
+      --purple: #6a2c91; --purple-dark: #3b1354; --gold: #f5b700; --gold-dark: #b88200;
+      --blue: #1b6ca8; --blue-light: #7fbfe9;
+      --bg: #f0f2f7; --card: #ffffff; --text: #1c2230; --muted: #646d80; --border: #dde2ec;
+      --ok: #15803d; --warn: #b45309; --bad: #b91c1c; --vet: #6d28d9;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background: var(--bg); color: var(--text); }
+
+    /* ================= PORTADA VERTICAL ================= */
+    .landing {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      padding: 24px 16px 18px;
+      color: #fff;
+      position: relative;
+      background-color: #14192d;
+      background-size: cover;
+      background-position: center top;
+      background-repeat: no-repeat;
+    }
+    .landing::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(16,12,34,.68) 0%, rgba(16,12,34,.35) 45%, rgba(12,15,28,.88) 100%);
+      z-index: 0;
+    }
+    .landing > * { position: relative; z-index: 1; width: 100%; max-width: 440px; }
+
+    .landing-top {
+      background: linear-gradient(135deg, rgba(73,26,102,.92), rgba(106,44,145,.88));
+      border: 2px solid var(--gold);
+      border-radius: 14px;
+      padding: 14px 14px 12px;
+      box-shadow: 0 10px 28px rgba(0,0,0,.45);
+    }
+    .landing-badge {
+      display: inline-block;
+      background: var(--gold);
+      color: #1f1600;
+      font-weight: 800;
+      font-size: .72rem;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 6px;
+    }
+    .landing-title {
+      margin: 0;
+      font-size: 1.28rem;
+      font-weight: 800;
+      line-height: 1.2;
+      text-shadow: 0 2px 4px rgba(0,0,0,.5);
+    }
+    .landing-clans-sub {
+      margin-top: 4px;
+      font-size: .85rem;
+      font-weight: 700;
+      color: #fde68a;
+      letter-spacing: .03em;
+    }
+    .landing-subtitle {
+      margin: 8px 0 0;
+      font-size: .82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: #fff;
+      opacity: .95;
+    }
+
+    .landing-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: auto 0 16px;
+    }
+    .clan-entry-btn {
+      width: 100%;
+      border: 2px solid rgba(255,255,255,.35);
+      border-radius: 12px;
+      padding: 14px 16px;
+      background: linear-gradient(135deg, rgba(27,108,168,.92), rgba(17,67,112,.94));
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-align: left;
+      box-shadow: 0 8px 20px rgba(0,0,0,.38);
+      transition: transform .12s ease, border-color .12s ease;
+    }
+    .clan-entry-btn:active { transform: scale(.985); }
+    .clan-entry-btn:hover { border-color: var(--gold); }
+    .clan-entry-btn.n1 { background: linear-gradient(135deg, rgba(106,44,145,.94), rgba(59,19,84,.96)); border-color: var(--gold); }
+    .clan-entry-btn strong { display: block; font-size: 1.05rem; }
+    .clan-entry-btn small { display: block; font-size: .78rem; opacity: .88; margin-top: 2px; }
+    .clan-entry-arrow { font-size: 1.2rem; font-weight: 800; color: var(--gold); }
+
+    .landing-footer {
+      display: flex;
+      justify-content: center;
+      padding-top: 4px;
+    }
+    .btn-sys-mini {
+      background: rgba(15,23,42,.78);
+      color: #cbd5e1;
+      border: 1px solid rgba(255,255,255,.24);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: .75rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-sys-mini:hover { color: #fff; border-color: #fff; }
+
+    /* ================= VISTA INTERNA ================= */
+    .app-shell { display: none; }
+    .app-shell.active { display: block; }
+
+    .top-strip {
+      background: #1e2436;
+      color: #fff;
+      padding: 9px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      position: sticky;
+      top: 0;
+      z-index: 35;
+      box-shadow: 0 2px 8px rgba(0,0,0,.22);
+    }
+    .top-strip-left { display: flex; align-items: center; gap: 8px; min-width: 0; }
+    .btn-home {
+      background: rgba(255,255,255,.14);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 7px;
+      padding: 6px 10px;
+      font-size: .8rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .clan-title-wrap { min-width: 0; }
+    .clan-title-wrap strong { display: block; font-size: .98rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .clan-title-wrap span { display: block; font-size: .74rem; color: #cbd5e1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .quick-clans { display: flex; gap: 4px; flex: none; }
+    .quick-clans button {
+      background: rgba(255,255,255,.1);
+      color: #e2e8f0;
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 6px;
+      padding: 5px 8px;
+      font-size: .74rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .quick-clans button.active { background: var(--gold); color: #1f1600; border-color: var(--gold); }
+
+    .container { max-width: 1320px; margin: 10px auto; padding: 0 10px 48px; }
+
+    /* ================= FRANJA DELGADA TAREAS A REALIZAR ================= */
+    .tasks-bar {
+      background: #fffbeb;
+      border: 1px solid #f59e0b;
+      border-left: 5px solid #d97706;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(180,83,9,.08);
+    }
+    .tasks-bar-head {
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+      background: linear-gradient(90deg, #fef3c7, #fffbeb);
+    }
+    .tasks-bar-head-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      font-size: .83rem;
+      font-weight: 700;
+      color: #78350f;
+    }
+    .tasks-count-pill {
+      background: #d97706;
+      color: #fff;
+      font-size: .72rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .tasks-toggle-txt { font-size: .76rem; font-weight: 700; color: #92400e; white-space: nowrap; }
+    .tasks-bar-body {
+      display: none;
+      padding: 12px;
+      background: #fff;
+      border-top: 1px solid #fde68a;
+    }
+    .tasks-bar.open .tasks-bar-body { display: block; }
+
+    .task-section-title {
+      font-size: .86rem;
+      font-weight: 800;
+      color: var(--purple-dark);
+      margin: 12px 0 6px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid var(--border);
+    }
+    .task-section-title:first-child { margin-top: 0; }
+    .task-sheet-wrap {
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      overflow-x: auto;
+      margin-bottom: 8px;
+    }
+    .task-sheet { width: 100%; border-collapse: collapse; font-size: .81rem; }
+    .task-sheet th { background: #f1f5f9; font-size: .72rem; padding: 7px 9px; color: #334155; text-align: left; }
+    .task-sheet td { padding: 7px 9px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    .task-sheet tr:last-child td { border-bottom: none; }
+
+    /* ================= CARRERA DEL RÍO ================= */
+    .race { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 12px; }
+    .tl { display: flex; align-items: flex-end; margin: 6px 0 4px; flex-wrap: nowrap; overflow-x: auto; padding: 30px 6px 20px; }
+    .tl-item { position: relative; display: flex; flex-direction: column; align-items: center; }
+    .tl-item small { position: absolute; top: 22px; white-space: nowrap; font-size: .76rem; font-weight: 700; }
+    .dot { width: 18px; height: 18px; border-radius: 50%; display: block; border: 2px solid; }
+    .dot.g { background: #bbf7d0; border-color: #4ade80; }
+    .dot.p { background: #ddd6fe; border-color: #a78bfa; }
+    .dot.cur { background: #facc15; border-color: #eab308; width: 24px; height: 24px; }
+    .line { width: 26px; height: 3px; background: #d1d5db; display: block; margin-bottom: 8px; }
+    .bubble { position: absolute; top: -30px; font-size: .95rem; padding: 2px 6px; border-radius: 6px; }
+    .bubble.g { background: #bbf7d0; } .bubble.p { background: #ddd6fe; }
+    .legend { font-size: .8rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 14px; margin: 4px 0 10px; }
+    .seg { display: inline-flex; margin-bottom: 12px; border-radius: 6px; overflow: hidden; border: 1px solid var(--blue); }
+    .seg button { border: 0; padding: 8px 14px; cursor: pointer; font-weight: 600; font-size: .83rem; background: var(--blue-light); color: #0b3a5c; }
+    .seg button.active { background: var(--blue); color: #fff; }
+    .rivals-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; margin-bottom: 8px; }
+    .rival-card {
+      background: var(--card); border: 1px solid var(--border); border-top: 4px solid var(--purple);
+      border-radius: 8px; padding: 10px 12px; cursor: pointer; transition: box-shadow .12s ease, transform .1s ease;
+    }
+    .rival-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,.1); transform: translateY(-1px); }
+    .rival-card.ours { border-top-color: var(--blue); background: #f6faff; }
+    .rival-card.ally { border-top-color: #0ea5e9; }
+    .rival-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-weight: 700; font-size: .9rem; }
+    .rival-head .nm { display: flex; align-items: center; gap: 7px; min-width: 0; }
+    .rival-head .nm span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-decoration: underline dotted; }
+    .shield { width: 26px; height: 30px; flex: none; object-fit: contain; }
+    .rival-meta { margin-top: 6px; font-size: .79rem; color: var(--muted); line-height: 1.55; }
+    .bar { height: 11px; background: #e5e7eb; border-radius: 6px; overflow: hidden; display: flex; margin-top: 7px; }
+    .bar i { display: block; height: 100%; }
+    .bar .dk { background: #2480cc; } .bar .lt { background: var(--blue-light); }
+    .badge-coliseo { display: inline-block; background: #fef3c7; color: #92400e; font-weight: 700; font-size: .78rem; padding: 3px 9px; border-radius: 999px; margin-left: 8px; }
+
+    /* ================= CONTROLES Y TABLAS ================= */
+    .toolbar { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; margin-bottom: 12px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+    .toolbar select, .panel select { padding: 5px 7px; border: 1px solid var(--border); border-radius: 6px; font-size: .82rem; background: #fff; }
+    .subnav { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .subnav button { padding: 7px 11px; border-radius: 6px; border: 1px solid var(--border); background: #fff; cursor: pointer; font-weight: 600; font-size: .82rem; color: var(--text); }
+    .subnav button.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .table-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: .83rem; }
+    th, td { padding: 8px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; text-align: left; }
+    th { background: #eef1f7; font-size: .74rem; text-transform: uppercase; color: #374151; }
+    th.sortable { cursor: pointer; user-select: none; }
+    tr:hover td { background: #f9fbff; }
+    td.num, th.num { text-align: right; }
+    .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: .72rem; font-weight: 700; }
+    .pill-ok { background: #dcfce7; color: var(--ok); } .pill-warn { background: #fef3c7; color: var(--warn); }
+    .pill-bad { background: #fee2e2; color: var(--bad); } .pill-vet { background: #ede9fe; color: var(--vet); }
+    .btn { padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border); background: #fff; color: var(--text); cursor: pointer; font-size: .81rem; font-weight: 600; }
+    .btn:hover { background: #f1f5f9; }
+    .btn-primary { background: var(--purple); color: #fff; border-color: var(--purple); }
+    .btn-primary:hover { background: var(--purple-dark); }
+    .panel { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 14px; }
+    .panel h3, .panel h4 { margin: 0 0 10px; }
+    .muted { color: var(--muted); font-size: .79rem; }
+    .est { color: var(--warn); }
+    .pos { color: var(--ok); font-weight: 700; } .neg { color: var(--bad); font-weight: 700; }
+    .notice { background: #fff7ed; border: 1px solid #fed7aa; color: #9a3412; border-radius: 8px; padding: 8px 12px; margin-bottom: 10px; font-size: .82rem; line-height: 1.45; }
+
+    .season-title { font-weight: 700; margin: 14px 0 6px; }
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 12px; }
+    .info-item { display: flex; gap: 10px; align-items: center; border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; background: #fafbfd; }
+    .info-item .ic { font-size: 1.5rem; }
+    .info-item b { display: block; font-size: .76rem; color: var(--muted); font-weight: 600; }
+    .act-head { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; background: #3b2a6b; color: #fff; border-radius: 8px; padding: 10px 14px; margin-bottom: 10px; font-weight: 700; }
+    .act-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-bottom: 1px solid var(--border); background: #f3f6fb; }
+    .act-row:nth-child(odd) { background: #e9eef7; }
+    .act-rank { width: 30px; height: 30px; border-radius: 6px; background: #94a3b8; color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center; flex: none; }
+    .act-av { width: 34px; height: 34px; border-radius: 50%; background: #cbd5e1; flex: none; display: flex; align-items: center; justify-content: center; color: #475569; font-weight: 700; }
+    .act-name { flex: 1; min-width: 0; } .act-name b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .act-name span { font-size: .75rem; color: var(--muted); }
+    .decks { display: inline-flex; align-items: center; gap: 4px; font-weight: 700; }
+    .decks i { width: 9px; height: 13px; border-radius: 2px; background: #cbd5e1; display: inline-block; }
+    .decks i.on { background: #f59e0b; }
+    .medals { min-width: 74px; text-align: right; font-weight: 700; }
+    .toggles { display: flex; flex-wrap: wrap; gap: 16px; padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: .83rem; }
+    .toggles label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+    .sticky-col { position: sticky; left: 0; background: #fff; z-index: 2; }
+
+    /* ================= MODALES ================= */
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(15,23,42,.62); display: none; align-items: center; justify-content: center; padding: 12px; z-index: 60; }
+    .modal-backdrop.open { display: flex; }
+    .modal { background: #fff; border-radius: 10px; max-width: 780px; width: 100%; max-height: 92vh; overflow-y: auto; box-shadow: 0 22px 50px rgba(0,0,0,.3); }
+    .modal-head { background: var(--blue); color: #fff; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; gap: 10px; position: sticky; top: 0; z-index: 3; }
+    .modal-body { padding: 14px 16px; }
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 6px 18px; font-size: .83rem; margin: 8px 0 14px; }
+    .stat-grid div { display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding: 4px 0; gap: 8px; }
+    .badges-grid { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 12px; }
+    .badge-item { border: 1px solid var(--border); background: #f8fafc; border-radius: 8px; padding: 6px 8px; cursor: pointer; font-size: .78rem; text-align: center; min-width: 74px; max-width: 110px; }
+    .badge-item.sel { border-color: var(--blue); background: #eff6ff; }
+    .badge-item img { width: 44px; height: 44px; object-fit: contain; display: block; margin: 0 auto 3px; }
+    .badge-item .t { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .badge-box-info { background: #eff6ff; border-left: 3px solid var(--blue); padding: 8px 12px; border-radius: 4px; font-size: .82rem; margin-bottom: 14px; line-height: 1.5; }
+    .pbar { height: 8px; background: #e5e7eb; border-radius: 5px; margin-top: 6px; overflow: hidden; }
+    .pbar i { display: block; height: 100%; background: #111827; }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== 1. PORTADA DE INICIO ==================== -->
+  <section id="landingScreen" class="landing">
+    <div class="landing-top">
+      <span class="landing-badge">Clash Royale</span>
+      <h1 class="landing-title">ALIANZA SOPAIPAS_CHILE</h1>
+      <div class="landing-clans-sub">Sopaipas_Chile • chile • mirmidones</div>
+      <div class="landing-subtitle">Gestor Competitivo Oficial de la Alianza</div>
+    </div>
+
+    <div class="landing-actions">
+      <button class="clan-entry-btn n1" data-open-tab="N1">
+        <div>
+          <strong>Sopaipas_Chile</strong>
+          <small>#G09GCYPJ · Clan Principal · Mín. 2.400 pts</small>
+        </div>
+        <span class="clan-entry-arrow">❯</span>
+      </button>
+
+      <button class="clan-entry-btn" data-open-tab="N2">
+        <div>
+          <strong>chile</strong>
+          <small>#Q9CYCY2V · Cantera Competitiva · Mín. 2.000 pts</small>
+        </div>
+        <span class="clan-entry-arrow">❯</span>
+      </button>
+
+      <button class="clan-entry-btn" data-open-tab="N3">
+        <div>
+          <strong>mirmidones</strong>
+          <small>#QUCVYPGY · Cantera Base · Mín. 1.600 pts</small>
+        </div>
+        <span class="clan-entry-arrow">❯</span>
+      </button>
+    </div>
+
+    <div class="landing-footer">
+      <button class="btn-sys-mini" data-open-tab="sistema">⚙ Sistema y Horarios</button>
+    </div>
+  </section>
+
+  <!-- ==================== 2. VISTA INTERNA DE LA APP ==================== -->
+  <div id="appShell" class="app-shell">
+    <div class="top-strip">
+      <div class="top-strip-left">
+        <button class="btn-home" id="btnGoHome">◀ Portada</button>
+        <div class="clan-title-wrap">
+          <strong id="topTitle">Sopaipas_Chile</strong>
+          <span id="topSubtitle">#G09GCYPJ</span>
+        </div>
+      </div>
+      <div class="quick-clans" id="quickNav">
+        <button data-tab="N1">Sopaipas</button>
+        <button data-tab="N2">chile</button>
+        <button data-tab="N3">mirmidones</button>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- VISTA DE CLAN -->
+      <div id="sec-clan">
+        <!-- Franja delgada y desplegable de Tareas a realizar -->
+        <div class="tasks-bar" id="tasksBar">
+          <div class="tasks-bar-head" id="tasksBarToggle">
+            <div class="tasks-bar-head-left">
+              <span>📋 Tareas a realizar</span>
+              <span class="tasks-count-pill" id="tasksCountPill">0 pendientes</span>
+            </div>
+            <span class="tasks-toggle-txt" id="tasksToggleTxt">Ver detalle ▾</span>
+          </div>
+          <div class="tasks-bar-body" id="tasksBody"></div>
+        </div>
+
+        <!-- Carrera del Río -->
+        <div class="race" id="raceBox"></div>
+
+        <!-- Barra de filtros y mínimo del clan -->
+        <div class="toolbar">
+          <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px;">
+            <label style="font-size:.82rem;">Datos:
+              <select id="srcSel">
+                <option value="auto">Automático</option>
+                <option value="current">Semana en curso</option>
+                <option value="closed">Semana cerrada</option>
+              </select>
+            </label>
+            <label style="font-size:.82rem;">Evaluación:
+              <select id="evalSel">
+                <option value="final">Final (16/16)</option>
+                <option value="live">En vivo (según día)</option>
+              </select>
+            </label>
+            <label style="font-size:.82rem;">Mínimo:
+              <select id="minScoreSelector"></select>
+            </label>
+            <span id="activeMinPill" class="pill pill-vet"></span>
+          </div>
+        </div>
+
+        <!-- Subpestañas del clan -->
+        <div class="subnav" id="subNav"></div>
+        <div id="subBody"></div>
+      </div>
+
+      <!-- VISTA SISTEMA Y HORARIOS -->
+      <div id="sec-sistema" style="display:none;">
+        <div class="panel">
+          <h3>Sistema y Horarios</h3>
+          <div class="notice" id="calSummaryBox" style="background:#eff6ff;border-color:#bfdbfe;color:#1e3a8a;">
+            Sincronizando horario Helsinki ↔ Santiago...
+          </div>
+          <div id="seasonSummaryBox" class="muted" style="margin-bottom:12px;">Temporada: detectando...</div>
+
+          <div style="margin-bottom:12px;">
+            <label style="display:block; font-size:.83rem; font-weight:600; margin-bottom:4px;">
+              URL de tu Cloudflare Worker (sin barra final):
+            </label>
+            <input id="workerUrlInput" type="text" placeholder="https://tu-worker.tu-subdominio.workers.dev"
+              style="width:100%; max-width:540px; padding:8px 10px; border:1px solid var(--border); border-radius:6px; margin-bottom:6px;" />
+            <button class="btn btn-primary" id="btnSaveUrl">Guardar URL</button>
+          </div>
+
+          <div style="margin-bottom:12px;">
+            <label style="display:block; font-size:.83rem; font-weight:600; margin-bottom:4px;">
+              Imagen de portada (nombre de archivo en GitHub o URL):
+            </label>
+            <input id="coverUrlInput" type="text" placeholder="portada.jpg"
+              style="width:100%; max-width:540px; padding:8px 10px; border:1px solid var(--border); border-radius:6px; margin-bottom:6px;" />
+            <button class="btn" id="btnSaveCover">Guardar portada</button>
+          </div>
+
+          <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:14px;">
+            <button class="btn" id="btnSyncNow">Actualizar ahora</button>
+            <button class="btn" id="btnToggleLoop">Pausar 60s</button>
+            <button class="btn" id="btnTest">Probar conexión</button>
+            <span id="syncMsg" style="font-size:.83rem; color:var(--ok);"></span>
+          </div>
+
+          <div style="margin-bottom:14px;">
+            <label style="font-size:.83rem; font-weight:600;">Hora del reinicio diario:
+              <select id="resetSel">
+                <option value="utc10">10:00 UTC (hora real del juego)</option>
+                <option value="helsinki0">00:00 Helsinki (documento original)</option>
+              </select>
+            </label>
+          </div>
+
+          <div id="scheduleDetails" style="font-size:.84rem; line-height:1.7;"></div>
+          <div id="testResult" style="font-size:.83rem; margin-top:10px;"></div>
+          <div id="warningsBox" style="margin-top:12px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL PERFIL DE JUGADOR ==================== -->
+  <div class="modal-backdrop" id="profileModal">
+    <div class="modal">
+      <div class="modal-head">
+        <div>
+          <div id="mTitle" style="font-weight:700; font-size:1.02rem;"></div>
+          <div id="mSubtitle" style="font-size:.79rem; opacity:.92;"></div>
+        </div>
+        <button class="btn" data-act="closeModal">Cerrar ✕</button>
+      </div>
+      <div class="modal-body" id="mBody"></div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL INFO COMPLETA DE CLAN RIVAL ==================== -->
+  <div class="modal-backdrop" id="rivalModal">
+    <div class="modal">
+      <div class="modal-head" style="background:var(--purple);">
+        <div>
+          <div id="rTitle" style="font-weight:700; font-size:1.02rem;"></div>
+          <div id="rSubtitle" style="font-size:.79rem; opacity:.92;"></div>
+        </div>
+        <button class="btn" data-act="closeRivalModal">Cerrar ✕</button>
+      </div>
+      <div class="modal-body" id="rBody"></div>
+    </div>
+  </div>
+
+  <script>
+    const DEFAULT_WORKER_URL = "https://alianzacr.ola818234.workers.dev";
+    const DEFAULT_COVER_IMG = "portada.jpg";
+    const LS = {
+      url: "alianza_sopaipas_worker_url",
+      cover: "alianza_sopaipas_cover_img",
+      reset: "alianza_reset_mode",
+      min: "alianza_min_scores",
+      mondaySnap: "alianza_monday_snapshot_v1",
+      ceded: "alianza_ceded_slots_v1",
+      prevSeason: "alianza_prev_season_cache_v1"
+    };
+
+    const CLAN_KEYS = ["N1", "N2", "N3"];
+    const DEFAULT_MIN = { N1: 2400, N2: 2000, N3: 1600 };
+    // Reglas de ascenso:
+    // mirmidones -> chile: 16/16 batallas, >= 12.500 trofeos
+    // chile -> Sopaipas_Chile: 16/16 batallas, >= 3.000 pts de guerra y >= 14.000 trofeos (tope máximo base)
+    const PROMO_RULES = {
+      N2: { fromKey: "N3", toName: "chile", minPts: 0, minTrophies: 12500 },
+      N1: { fromKey: "N2", toName: "Sopaipas_Chile", minPts: 3000, minTrophies: 14000 }
+    };
+    const MAX_BASE_TROPHIES = 14000;
+    const TZ_H = "Europe/Helsinki", TZ_S = "America/Santiago";
+
+    function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+    function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+
+    let workerUrl = (lsGet(LS.url) || DEFAULT_WORKER_URL).replace(/\/+$/, "");
+    let coverImgUrl = lsGet(LS.cover) || DEFAULT_COVER_IMG;
+    let resetMode = lsGet(LS.reset) === "helsinki0" ? "helsinki0" : "utc10";
+    let inLanding = true;
+    let activeTab = "N1", activeSub = "players";
+    let allianceData = null, paused = false, lastSync = null, syncing = false;
+    let viewSource = "auto", evalMode = "final", medalTab = "actuales";
+    let onlyMembers = true, heat = true, analysisSort = { key: "seasonSum", dir: -1 };
+    let tasksOpen = false;
+
+    const minScoreByClan = { ...DEFAULT_MIN };
+    try { Object.assign(minScoreByClan, JSON.parse(lsGet(LS.min) || "{}")); } catch (e) {}
+
+    const cededSlotsByClan = { N2: new Set(), N1: new Set() };
+    try {
+      const savedCeded = JSON.parse(lsGet(LS.ceded) || "{}");
+      if (Array.isArray(savedCeded.N2)) cededSlotsByClan.N2 = new Set(savedCeded.N2);
+      if (Array.isArray(savedCeded.N1)) cededSlotsByClan.N1 = new Set(savedCeded.N1);
+    } catch (e) {}
+
+    function saveCeded() {
+      lsSet(LS.ceded, JSON.stringify({
+        N2: Array.from(cededSlotsByClan.N2),
+        N1: Array.from(cededSlotsByClan.N1)
+      }));
+    }
+
+    const profileCache = new Map();
+    const rivalCache = new Map();
+    let curModal = null;
+
+    const el = (id) => document.getElementById(id);
+    const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const fmt = (n) => Number(n || 0).toLocaleString("es-CL");
+    const getBase = () => (workerUrl || (el("workerUrlInput").value || "").trim()).replace(/\/+$/, "");
+
+    function applyCoverBackground() {
+      const landing = el("landingScreen");
+      if (landing && coverImgUrl) {
+        landing.style.backgroundImage = 'url("' + coverImgUrl.replace(/"/g, '\\"') + '")';
+      }
+    }
+
+    function countdown(totalSecs) {
+      const s = Math.max(0, Number(totalSecs || 0));
+      return String(Math.floor(s / 3600)).padStart(2, "0") + "h " + String(Math.floor((s % 3600) / 60)).padStart(2, "0") + "m " + String(s % 60).padStart(2, "0") + "s";
+    }
+    function roleName(r) { return ({ leader: "Líder", coLeader: "Colíder", elder: "Veterano", member: "Miembro" })[r] || r || "Miembro"; }
+    function roleLetter(r) { return ({ leader: "L", coLeader: "C", elder: "E", member: "M" })[r] || "-"; }
+    function formatRole(role, clanKey) {
+      if (clanKey === "N3") return "Miembro";
+      return roleName(role);
+    }
+    function formatTrophiesDisplay(t) {
+      const val = Number(t || 0);
+      if (val > MAX_BASE_TROPHIES) return fmt(MAX_BASE_TROPHIES) + " <span class='muted' title='Trofeos temporales de evento de temporada (" + fmt(val) + ")'>(+" + fmt(val - MAX_BASE_TROPHIES) + " temp)</span>";
+      return fmt(val);
+    }
+
+    function zparts(d, tz) {
+      const f = new Intl.DateTimeFormat("en-CA", { timeZone: tz, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" });
+      const o = {};
+      f.formatToParts(d).forEach((p) => { if (p.type !== "literal") o[p.type] = Number(p.value); });
+      if (o.hour === 24) o.hour = 0;
+      return o;
+    }
+    function tzOffset(d, tz) {
+      const p = zparts(d, tz);
+      return Date.UTC(p.year, p.month - 1, p.day, p.hour, p.minute, p.second) - Math.floor(d.getTime() / 1000) * 1000;
+    }
+    function nextLocalMidnight(now, tz) {
+      const p = zparts(now, tz);
+      const base = Date.UTC(p.year, p.month - 1, p.day + 1, 0, 0, 0);
+      let t = base - tzOffset(now, tz);
+      t = base - tzOffset(new Date(t), tz);
+      return new Date(t);
+    }
+    function nextUtcHour(now, h) {
+      let t = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), h);
+      if (t <= now.getTime()) t += 864e5;
+      return new Date(t);
+    }
+    function hm(d, tz) { return new Intl.DateTimeFormat("es-CL", { timeZone: tz, hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).format(d); }
+    function resetInfo(now, mode) {
+      const next = mode === "helsinki0" ? nextLocalMidnight(now, TZ_H) : nextUtcHour(now, 10);
+      return { next, secs: Math.max(0, Math.floor((next - now) / 1000)), helsinki: hm(next, TZ_H), santiago: hm(next, TZ_S), utc: hm(next, "UTC") };
+    }
+    function clockCalendar(now, mode) {
+      let wd;
+      if (mode === "helsinki0") { const p = zparts(now, TZ_H); wd = new Date(Date.UTC(p.year, p.month - 1, p.day)).getUTCDay(); }
+      else wd = new Date(now.getTime() - 10 * 3600e3).getUTCDay();
+      const iso = wd === 0 ? 7 : wd;
+      const isBattleDay = iso >= 4;
+      const n = isBattleDay ? iso - 3 : 0;
+      return { source: "reloj", periodType: isBattleDay ? "warDay" : "training", dayIndex: iso - 1, isBattleDay, battleDayNumber: n, maxDecksToday: n * 4 };
+    }
+    function getCal() { return (allianceData && allianceData.calendar) || clockCalendar(new Date(), resetMode); }
+    function effSource() { if (viewSource !== "auto") return viewSource; return getCal().isBattleDay ? "current" : "closed"; }
+
+    /* ================= PERSISTENCIA LUNES A MIÉRCOLES ================= */
+    function getWarWeekKey(data) {
+      const c1 = data && data.clans && data.clans.N1;
+      const lw = c1 && c1.logWeeks && c1.logWeeks[0];
+      if (lw) return String(lw.seasonId) + "-" + String(lw.week);
+      return "default";
+    }
+
+    function syncMondaySnapshot(data) {
+      if (!data || !data.clans) return;
+      const cal = getCal();
+      const weekKey = getWarWeekKey(data);
+      let snap = null;
+      try { snap = JSON.parse(lsGet(LS.mondaySnap) || "null"); } catch (e) {}
+
+      // Si estamos en días de entrenamiento (lunes a miércoles):
+      // Se guarda la foto de cierre de guerra una vez por semana cerrada y NO se borra ni vuelve a cero
+      // hasta el jueves cuando empieza la guerra nueva. Solo se excluyen jugadores que ya salieron del clan.
+      if (!cal.isBattleDay) {
+        if (!snap || snap.weekKey !== weekKey) {
+          const clansSnap = {};
+          CLAN_KEYS.forEach((k) => {
+            const c = data.clans[k];
+            if (!c) return;
+            clansSnap[k] = (c.players || []).map((p) => ({
+              tag: p.tag,
+              name: p.name,
+              role: p.role,
+              trophies: p.trophies,
+              decks: p.lwDecks || 0,
+              pts: p.lwPts || 0
+            }));
+          });
+          snap = { weekKey, capturedAt: new Date().toISOString(), clans: clansSnap };
+          lsSet(LS.mondaySnap, JSON.stringify(snap));
+        }
+      } else {
+        // Jueves a domingo: limpia la foto de entrenamiento para capturar el próximo lunes
+        if (snap) {
+          try { localStorage.removeItem(LS.mondaySnap); } catch (e) {}
+        }
+      }
+    }
+
+    function getTaskPlayersForClan(clanKey) {
+      const clan = allianceData && allianceData.clans && allianceData.clans[clanKey];
+      if (!clan) return [];
+      const currentPlayers = clan.players || [];
+      const currentTags = new Set(currentPlayers.map((p) => p.tag));
+      const cal = getCal();
+
+      if (!cal.isBattleDay) {
+        let snap = null;
+        try { snap = JSON.parse(lsGet(LS.mondaySnap) || "null"); } catch (e) {}
+        if (snap && snap.clans && Array.isArray(snap.clans[clanKey])) {
+          // Conserva los datos grabados del lunes filtrando únicamente a los que salieron del clan
+          return snap.clans[clanKey]
+            .filter((sp) => currentTags.has(sp.tag))
+            .map((sp) => {
+              const live = currentPlayers.find((cp) => cp.tag === sp.tag) || sp;
+              return {
+                ...sp,
+                name: live.name || sp.name,
+                role: live.role || sp.role,
+                trophies: live.trophies != null ? live.trophies : sp.trophies
+              };
+            });
+        }
+      }
+      return currentPlayers.map((p) => ({
+        tag: p.tag,
+        name: p.name,
+        role: p.role,
+        trophies: p.trophies,
+        decks: cal.isBattleDay ? (p.weekDecks || 0) : (p.lwDecks || 0),
+        pts: cal.isBattleDay ? (p.weekPts || 0) : (p.lwPts || 0)
+      }));
+    }
+
+    function metrics(p) {
+      if (effSource() === "closed") return { decks: p.lwDecks || 0, pts: p.lwPts || 0, todayDecks: 0, todayPts: 0, closed: true };
+      return { decks: p.weekDecks || 0, pts: p.weekPts || 0, todayDecks: p.todayDecks || 0, todayPts: p.todayPtsEst || 0, closed: false };
+    }
+
+    function evaluate(p, key, d, mode) {
+      const level = key === "N1" ? 1 : key === "N2" ? 2 : 3;
+      const minPts = minScoreByClan[key];
+      if (mode === "live") {
+        const cal = getCal();
+        if (cal.isBattleDay && !(cal.battleDayNumber >= 4 && d.decks >= 16)) {
+          const day = cal.battleDayNumber;
+          if (d.decks < (day - 1) * 4) return { text: "⚠ Atrasado (" + d.decks + "/" + ((day - 1) * 4) + ")", cls: "pill-bad", code: "late" };
+          if (d.decks < day * 4) return { text: "⏳ Falta jugar hoy", cls: "pill-warn", code: "pending" };
+          return { text: "✓ En ritmo", cls: "pill-ok", code: "ok" };
+        }
+      }
+      if (level === 3 && d.decks === 0) return { text: "✕ Expulsión (0/16)", cls: "pill-bad", code: "expel" };
+      if (level < 3 && d.decks < 16) return { text: "↓↓ Directo a mirmidones (<16/16)", cls: "pill-bad", code: "direct" };
+      if (d.decks >= 16 && d.pts < minPts) {
+        if (level === 3) return { text: "⚠ Bajo mínimo (<" + fmt(minPts) + " pts)", cls: "pill-warn", code: "warn" };
+        return { text: "↓ Baja (<" + fmt(minPts) + " pts)", cls: "pill-warn", code: "down" };
+      }
+      if (level > 1 && d.pts > 3000) return { text: "★ Vet >3k", cls: "pill-vet", code: "vet" };
+      return { text: "✓ Cumple", cls: "pill-ok", code: "ok" };
+    }
+
+    function computeCascadePromotions(taskPlayers, rule, cededSet) {
+      // Evalúa Top 5 por orden de cierre de guerra que cumplan 16/16 batallas, puntos mínimos y trofeos mínimos (14.000 máx base)
+      const eligibleTop5 = (taskPlayers || [])
+        .filter((p) => (p.decks || 0) >= 16 && (p.pts || 0) >= rule.minPts && (p.trophies || 0) >= rule.minTrophies)
+        .sort((a, b) => b.pts - a.pts || Math.min(b.trophies, MAX_BASE_TROPHIES) - Math.min(a.trophies, MAX_BASE_TROPHIES))
+        .slice(0, 5);
+      const promoted = [];
+      for (const c of eligibleTop5) {
+        if (promoted.length >= 3) break;
+        if (!cededSet.has(c.tag)) promoted.push(c.tag);
+      }
+      return { eligibleTop5, promotedSet: new Set(promoted) };
+    }
+
+    /* ================= RENDER FRANJA DE TAREAS POR CLAN ================= */
+    function renderTasksBar(clanKey) {
+      const clan = allianceData && allianceData.clans && allianceData.clans[clanKey];
+      if (!clan) {
+        el("tasksCountPill").textContent = "Sin datos";
+        el("tasksBody").innerHTML = '<div class="muted">Sincroniza con el Worker en Sistema y Horarios.</div>';
+        return;
+      }
+
+      const cal = getCal();
+      const players = getTaskPlayersForClan(clanKey);
+      const g = { direct: [], down: [], expel: [], vet: [], warn: [] };
+
+      players.forEach((p) => {
+        const r = evaluate(p, clanKey, { decks: p.decks, pts: p.pts }, "final");
+        if (g[r.code]) g[r.code].push({ ...p, rule: r });
+      });
+
+      // Ascensos relevantes para el clan activo:
+      // En N1 (Sopaipas_Chile): muestra quiénes suben desde chile (N2 -> N1)
+      // En N2 (chile): muestra quiénes suben desde mirmidones (N3 -> N2) y quiénes suben a Sopaipas_Chile (N2 -> N1)
+      // En N3 (mirmidones): muestra quiénes suben hacia chile (N3 -> N2)
+      const promoBlocks = [];
+      if (clanKey === "N1" || clanKey === "N2") {
+        const srcList = getTaskPlayersForClan("N2");
+        const res21 = computeCascadePromotions(srcList, PROMO_RULES.N1, cededSlotsByClan.N1);
+        promoBlocks.push({
+          title: "Ascensos chile → Sopaipas_Chile (16/16 · ≥3.000 pts · ≥14.000 trofeos · Máx. 3 cupos Top 1–5)",
+          key: "N1",
+          data: res21
+        });
+      }
+      if (clanKey === "N2" || clanKey === "N3") {
+        const srcList = getTaskPlayersForClan("N3");
+        const res32 = computeCascadePromotions(srcList, PROMO_RULES.N2, cededSlotsByClan.N2);
+        promoBlocks.push({
+          title: "Ascensos mirmidones → chile (16/16 · ≥12.500 trofeos · Máx. 3 cupos Top 1–5)",
+          key: "N2",
+          data: res32
+        });
+      }
+
+      const totalTasks = g.direct.length + g.down.length + g.expel.length + g.vet.length + g.warn.length +
+        promoBlocks.reduce((acc, b) => acc + b.data.promotedSet.size, 0);
+
+      el("tasksCountPill").textContent = totalTasks + (totalTasks === 1 ? " movimiento" : " movimientos");
+      el("tasksToggleTxt").textContent = tasksOpen ? "Ocultar ▲" : "Ver detalle ▾";
+      el("tasksBar").classList.toggle("open", tasksOpen);
+
+      const renderPromoTable = (b) => {
+        const rows = b.data.eligibleTop5.map((p, idx) => {
+          const isCeded = cededSlotsByClan[b.key].has(p.tag);
+          const isProm = b.data.promotedSet.has(p.tag);
+          const stateHtml = isProm
+            ? '<span class="pill pill-ok">↑ Sube (Cupo #' + (Array.from(b.data.promotedSet).indexOf(p.tag) + 1) + ")</span>"
+            : isCeded
+              ? '<span class="pill pill-warn">Cedió cupo</span>'
+              : '<span class="pill pill-vet">Reserva Top 5</span>';
+          return "<tr>" +
+            "<td><strong>#" + (idx + 1) + "</strong></td>" +
+            "<td><strong>" + esc(p.name) + "</strong><br/><span class='muted'>" + esc(p.tag) + "</span></td>" +
+            "<td>" + p.decks + "/16</td>" +
+            "<td class='num'><strong>" + fmt(p.pts) + "</strong></td>" +
+            "<td class='num'>" + formatTrophiesDisplay(p.trophies) + "</td>" +
+            "<td>" + stateHtml + "</td>" +
+            "<td><button class='btn' style='padding:3px 7px;font-size:.73rem;' data-act='cede' data-key='" + b.key + "' data-tag='" + esc(p.tag) + "'>" + (isCeded ? "Restaurar" : "Ceder") + "</button></td>" +
+            "</tr>";
+        }).join("");
+
+        return '<div class="task-section-title">' + esc(b.title) + "</div>" +
+          '<div class="task-sheet-wrap"><table class="task-sheet"><thead><tr>' +
+          "<th>Pos.</th><th>Jugador</th><th>Batallas</th><th class='num'>Puntos</th><th class='num'>Trofeos</th><th>Estado</th><th>Cupo</th>" +
+          "</tr></thead><tbody>" +
+          (rows || "<tr><td colspan='7' class='muted'>Ningún jugador cumple los requisitos de ascenso en el Top 5.</td></tr>") +
+          "</tbody></table></div>";
+      };
+
+      const renderActionRows = (title, list, badgeCls, actionLabel) => {
+        if (!list.length) return "";
+        const rows = list.map((p, i) =>
+          "<tr>" +
+          "<td>" + (i + 1) + "</td>" +
+          "<td><strong>" + esc(p.name) + "</strong><br/><span class='muted'>" + esc(p.tag) + "</span></td>" +
+          "<td>" + roleName(p.role) + "</td>" +
+          "<td>" + p.decks + "/16</td>" +
+          "<td class='num'><strong>" + fmt(p.pts) + "</strong></td>" +
+          "<td class='num'>" + formatTrophiesDisplay(p.trophies) + "</td>" +
+          "<td><span class='pill " + badgeCls + "'>" + esc(actionLabel) + "</span></td>" +
+          "</tr>"
+        ).join("");
+        return '<div class="task-section-title">' + esc(title) + " (" + list.length + ")</div>" +
+          '<div class="task-sheet-wrap"><table class="task-sheet"><thead><tr>' +
+          "<th>#</th><th>Jugador</th><th>Cargo</th><th>Batallas</th><th class='num'>Puntos</th><th class='num'>Trofeos</th><th>Acción</th>" +
+          "</tr></thead><tbody>" + rows + "</tbody></table></div>";
+      };
+
+      const lockNote = !cal.isBattleDay
+        ? '<div class="notice" style="margin-bottom:10px;">📌 <b>Registro fijo Lunes a Miércoles:</b> los movimientos de cierre se mantienen grabados hasta el jueves (solo se quita un jugador si abandona el clan).</div>'
+        : '<div class="muted" style="margin-bottom:8px;">Vista previa en curso (se fijará el lunes al cerrar la guerra).</div>';
+
+      el("tasksBody").innerHTML =
+        lockNote +
+        promoBlocks.map(renderPromoTable).join("") +
+        renderActionRows("Descenso directo a mirmidones (<16/16 batallas)", g.direct, "pill-bad", "↓↓ Bajar a mirmidones") +
+        renderActionRows("Descenso de nivel (<" + fmt(minScoreByClan[clanKey]) + " pts con 16/16)", g.down, "pill-warn", "↓ Bajar un nivel") +
+        renderActionRows("Expulsión por inactividad (0/16 batallas)", g.expel, "pill-bad", "✕ Expulsar") +
+        renderActionRows("Ascenso de cargo a Veterano (>3.000 pts)", g.vet, "pill-vet", "★ Subir a Veterano") +
+        renderActionRows("Aviso bajo mínimo (<" + fmt(minScoreByClan[clanKey]) + " pts)", g.warn, "pill-warn", "⚠ Advertencia");
+    }
+
+    /* ================= CARRERA DEL RÍO Y RIVALES CLICKEABLES ================= */
+    function shield(seed, url) {
+      if (url) return '<img class="shield" src="' + esc(url) + '" alt="" onerror="this.style.display=\'none\'">';
+      const hue = (Number(seed || 0) * 47) % 360;
+      return '<svg class="shield" viewBox="0 0 24 28"><path d="M2 2h20v14l-10 10L2 16z" fill="hsl(' + hue + ' 55% 42%)"/><path d="M12 7l1.8 3.7 4 .6-2.9 2.8.7 4L12 16l-3.6 1.9.7-4-2.9-2.8 4-.6z" fill="#fff"/></svg>';
+    }
+
+    function renderRace(clan) {
+      const cal = getCal();
+      const rivals = (clan.rivals || []).slice(0, 5);
+      const scale = Math.max(1, ...rivals.map((r) => Math.max(r.projected || 0, r.medals || 0))) * 1.3;
+      const cur = Number.isFinite(cal.dayIndex) ? cal.dayIndex : -1;
+      const dots = [0, 1, 2, 3, 4, 5, 6].map((i) =>
+        '<div class="tl-item">' + (i === 0 ? '<span class="bubble g">🎯</span>' : "") + (i === 3 ? '<span class="bubble p">⚔️</span>' : "") +
+        '<i class="dot ' + (i < 3 ? "g" : "p") + (i === cur ? " cur" : "") + '"></i>' + (i === cur ? "<small>Día " + (i + 1) + "</small>" : "") + "</div>" +
+        (i < 6 ? '<span class="line"></span>' : "")).join("");
+      const coliseo = clan.season && clan.season.mode === "Semana de Coliseo";
+      const ownBadge = clan.info && clan.info.badgeUrl;
+      const cards = rivals.map((r, idx) => {
+        const dark = Math.min(100, (r.medals / scale) * 100);
+        const light = medalTab === "proyectadas" ? Math.max(0, Math.min(100 - dark, ((r.projected - r.medals) / scale) * 100)) : 0;
+        return '<div class="rival-card ' + (r.isOwn ? "ours" : r.isAllianceClan ? "ally" : "") + '" data-act="openRival" data-ridx="' + idx + '" title="Toca para ver datos completos de ' + esc(r.name) + '">' +
+          '<div class="rival-head"><span class="nm">' + shield(r.badgeId, r.isOwn ? ownBadge : "") + "<span>" + esc(r.name) + "</span></span><span>" + fmt(r.clanScore) + " 🏆</span></div>" +
+          '<div class="rival-meta">⛵ Barco: <b>' + fmt(r.boat) + "</b> · 🏅 Medalla: <b>" + fmt(r.medals) + "</b><br/>" +
+          "🃏 " + r.decksToday + "/" + r.slots + " hoy · prom. " + r.avg.toFixed(2) + " · → <b>" + fmt(r.projected) + "</b></div>" +
+          '<div class="bar"><i class="dk" style="width:' + dark + '%"></i><i class="lt" style="width:' + light + '%"></i></div></div>';
+      }).join("");
+      el("raceBox").innerHTML =
+        '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;"><strong>Carrera del Río</strong>' +
+        (coliseo ? '<span class="badge-coliseo">🏟️ Semana de Coliseo</span>' : "") + "</div>" +
+        '<div class="tl">' + dots + "</div>" +
+        '<div class="legend"><span>🃏 Mazos usados hoy</span><span>🏅 Promedio por mazo</span><span>→ Proyectadas</span><span>👆 Toca un barco para ver datos del rival</span></div>' +
+        '<div class="seg"><button data-act="medal" data-m="actuales" class="' + (medalTab === "actuales" ? "active" : "") + '">Medallas actuales</button><button data-act="medal" data-m="proyectadas" class="' + (medalTab === "proyectadas" ? "active" : "") + '">Medallas proyectadas</button></div>' +
+        '<div class="rivals-grid" id="rivalsBox">' + (cards || '<div class="muted">La API no entregó la carrera actual de este clan.</div>') + "</div>" +
+        '<div style="font-weight:700;margin-top:6px;">Participantes: ' + fmt(clan.raceMeta ? clan.raceMeta.participantsActive : 0) + "</div>";
+    }
+
+    async function openRivalDetail(ridx) {
+      const clan = allianceData && allianceData.clans && allianceData.clans[activeTab];
+      const r = clan && clan.rivals && clan.rivals[ridx];
+      if (!r) return;
+
+      // Si es uno de los 3 clanes de nuestra alianza, cambia directo o muestra su ficha
+      if (r.isOwn && clan.info) {
+        activeSub = "info";
+        renderClanView();
+        return;
+      }
+
+      const tag = r.tag || "";
+      el("rTitle").textContent = r.name + (tag ? " (" + tag + ")" : "");
+      el("rSubtitle").textContent = "Trofeos de guerra: " + fmt(r.clanScore) + " · Medallas actuales: " + fmt(r.medals);
+      el("rivalModal").classList.add("open");
+
+      const baseMetrics =
+        '<div class="stat-grid">' +
+        "<div><span>Medallas en carrera</span><b>" + fmt(r.medals) + "</b></div>" +
+        "<div><span>Puntos de barco</span><b>" + fmt(r.boat) + "</b></div>" +
+        "<div><span>Mazos jugados hoy</span><b>" + r.decksToday + " / " + r.slots + "</b></div>" +
+        "<div><span>Promedio por mazo</span><b>" + Number(r.avg || 0).toFixed(2) + "</b></div>" +
+        "<div><span>Medallas proyectadas</span><b>" + fmt(r.projected) + "</b></div>" +
+        "<div><span>Trofeos de guerra</span><b>" + fmt(r.clanScore) + "</b></div>" +
+        "</div>";
+
+      if (!tag) {
+        el("rBody").innerHTML = baseMetrics + '<div class="muted">Este rival no tiene tag expuesto en el objeto de carrera.</div>';
+        return;
+      }
+
+      if (rivalCache.has(tag)) {
+        renderRivalFullModal(r, baseMetrics, rivalCache.get(tag));
+        return;
+      }
+
+      el("rBody").innerHTML = baseMetrics + '<div class="muted">Consultando información completa del clan rival en la API...</div>';
+      try {
+        // Intenta endpoint /api/clan?tag=... si el Worker lo soporta, o usa los datos ya disponibles
+        const res = await fetch(getBase() + "/api/clan?tag=" + encodeURIComponent(tag), { cache: "no-store" });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && (data.clan || data.info || data.name)) {
+            const info = data.clan || data.info || data;
+            rivalCache.set(tag, info);
+            renderRivalFullModal(r, baseMetrics, info);
+            return;
+          }
+        }
+        throw new Error("Sin endpoint dedicado");
+      } catch (e) {
+        // Si el Worker fijo no expone /api/clan, mostramos toda la data pública disponible del rival en la carrera y participants
+        const raceParticipants = Array.isArray(r.participants) ? r.participants : [];
+        rivalCache.set(tag, { _fallback: true, participants: raceParticipants });
+        renderRivalFullModal(r, baseMetrics, { _fallback: true, participants: raceParticipants });
+      }
+    }
+
+    function renderRivalFullModal(r, baseMetrics, info) {
+      if (info && !info._fallback) {
+        const type = ({ open: "Abierto", inviteOnly: "Solo invitación", closed: "Cerrado" })[info.type] || info.type || "—";
+        const members = Array.isArray(info.memberList) ? info.memberList : [];
+        const membersHtml = members.length
+          ? '<div class="task-section-title">Integrantes del clan rival (' + members.length + '/50)</div>' +
+            '<div class="table-wrap"><table><thead><tr><th>#</th><th>Jugador</th><th>Rol</th><th class="num">Trofeos</th><th class="num">Donaciones</th></tr></thead><tbody>' +
+            members.map((m, i) => "<tr><td>" + (i + 1) + "</td><td><strong>" + esc(m.name) + "</strong><br/><span class='muted'>" + esc(m.tag) + "</span></td><td>" + roleName(m.role) + "</td><td class='num'>" + formatTrophiesDisplay(m.trophies) + "</td><td class='num'>" + fmt(m.donations) + "</td></tr>").join("") +
+            "</tbody></table></div>"
+          : "";
+
+        el("rBody").innerHTML =
+          baseMetrics +
+          '<p style="line-height:1.5;">' + esc(info.description || "Sin descripción pública.") + "</p>" +
+          '<div class="info-grid">' +
+          '<div class="info-item"><span class="ic">🏆</span><div><b>Puntaje de clan</b>' + fmt(info.clanScore) + "</div></div>" +
+          '<div class="info-item"><span class="ic">🎯</span><div><b>Trofeos requeridos</b>' + fmt(info.requiredTrophies) + "</div></div>" +
+          '<div class="info-item"><span class="ic">🃏</span><div><b>Donaciones/semana</b>' + fmt(info.donationsPerWeek) + "</div></div>" +
+          '<div class="info-item"><span class="ic">👥</span><div><b>Miembros</b>' + (info.members || members.length || "—") + " / 50</div></div>" +
+          '<div class="info-item"><span class="ic">🌎</span><div><b>Región</b>' + esc((info.location && info.location.name) || info.location || "—") + "</div></div>" +
+          '<div class="info-item"><span class="ic">🔒</span><div><b>Tipo</b>' + esc(type) + "</div></div>" +
+          "</div>" + membersHtml;
+        return;
+      }
+
+      const parts = (info && info.participants) || [];
+      const partsHtml = parts.length
+        ? '<div class="task-section-title">Participantes registrados en esta carrera (' + parts.length + ')</div>' +
+          '<div class="table-wrap"><table><thead><tr><th>#</th><th>Jugador</th><th class="num">Mazos hoy</th><th class="num">Total mazos</th><th class="num">Fama</th></tr></thead><tbody>' +
+          parts.slice().sort((a, b) => (b.fame || 0) - (a.fame || 0)).map((p, i) =>
+            "<tr><td>" + (i + 1) + "</td><td><strong>" + esc(p.name) + "</strong><br/><span class='muted'>" + esc(p.tag || "") + "</span></td><td class='num'>" + (p.decksUsedToday || 0) + "/4</td><td class='num'>" + (p.decksUsed || 0) + "/16</td><td class='num'><b>" + fmt(p.fame) + "</b></td></tr>"
+          ).join("") + "</tbody></table></div>"
+        : '<div class="muted" style="margin-top:8px;">Datos públicos de carrera sincronizados desde el Worker.</div>';
+
+      el("rBody").innerHTML = baseMetrics + partsHtml;
+    }
+
+    /* ================= VISTA DE CLAN Y SUBPESTAÑAS ================= */
+    function renderClanView() {
+      const clan = allianceData && allianceData.clans && allianceData.clans[activeTab];
+      if (!clan) {
+        el("topTitle").textContent = activeTab === "N1" ? "Sopaipas_Chile" : activeTab === "N2" ? "chile" : "mirmidones";
+        el("topSubtitle").textContent = "Sin datos sincronizados";
+        el("raceBox").innerHTML = "";
+        el("subNav").innerHTML = "";
+        el("subBody").innerHTML = '<div class="panel">Configura o sincroniza tu Worker en <strong>Sistema y Horarios</strong> desde la Portada.</div>';
+        renderTasksBar(activeTab);
+        return;
+      }
+
+      el("topTitle").textContent = clan.config.name + " (" + clan.config.tag + ")";
+      el("topSubtitle").textContent = clan.info
+        ? "Trofeos: " + fmt(clan.info.clanScore) + " · Guerra: " + fmt(clan.info.clanWarTrophies) + " · Miembros: " + clan.info.membersCount + "/50"
+        : (clan.error || "");
+
+      renderTasksBar(activeTab);
+      renderRace(clan);
+
+      const sel = el("minScoreSelector");
+      sel.innerHTML = "";
+      for (let pts = 1600; pts <= 3600; pts += 50) {
+        const op = document.createElement("option");
+        op.value = pts; op.textContent = fmt(pts) + " pts";
+        if (pts === minScoreByClan[activeTab]) op.selected = true;
+        sel.appendChild(op);
+      }
+      el("srcSel").value = viewSource;
+      el("evalSel").value = evalMode;
+      el("activeMinPill").textContent = "Mínimo: " + fmt(minScoreByClan[activeTab]) + " pts";
+
+      const subs = [
+        ["players", "Jugadores"],
+        ["activity", "Actividad en curso"],
+        ["registro", "Registro de guerra"],
+        ["analisis", "Análisis por Temporada"],
+        ["info", "Info del clan"]
+      ];
+      el("subNav").innerHTML = subs.map((s) => '<button data-act="sub" data-sub="' + s[0] + '" class="' + (activeSub === s[0] ? "active" : "") + '">' + s[1] + "</button>").join("");
+
+      const body = el("subBody");
+      if (activeSub === "players") body.innerHTML = renderPlayersTable(clan);
+      else if (activeSub === "activity") body.innerHTML = renderActivity(clan);
+      else if (activeSub === "registro") body.innerHTML = renderRegistro(clan);
+      else if (activeSub === "analisis") body.innerHTML = renderAnalisis(clan);
+      else body.innerHTML = renderInfo(clan);
+    }
+
+    function renderPlayersTable(clan) {
+      const rows = (clan.players || []).map((p) => ({ p, d: metrics(p) }))
+        .sort((a, b) => b.d.pts - a.d.pts || b.d.decks - a.d.decks || b.p.trophies - a.p.trophies);
+      const head = '<th>#</th><th>Jugador (#TAG)</th><th>Rol</th><th class="num">Trofeos</th><th>Hoy (0/4)</th><th>Pts Hoy</th><th>Semanal (0/16)</th><th>Pts Sem.</th><th>Regla / Estado</th><th>Perfil</th>';
+      const body = rows.map((x, i) => {
+        const p = x.p, d = x.d, rule = evaluate(p, activeTab, d, d.closed ? "final" : evalMode);
+        return "<tr><td>" + (i + 1) + "</td>" +
+          "<td><strong>" + esc(p.name) + '</strong><br/><span style="color:var(--muted);font-size:.74rem;">' + esc(p.tag) + "</span></td>" +
+          "<td>" + formatRole(p.role, activeTab) + "</td>" +
+          '<td class="num">' + formatTrophiesDisplay(p.trophies) + "</td>" +
+          "<td>" + (d.closed ? "—" : d.todayDecks + "/4") + "</td>" +
+          "<td>" + (d.closed ? "—" : '<span class="est" title="Estimado: mazos de hoy × promedio del jugador">~+' + d.todayPts + "</span>") + "</td>" +
+          "<td>" + d.decks + "/16</td><td><strong>" + fmt(d.pts) + "</strong></td>" +
+          '<td><span class="pill ' + rule.cls + '">' + rule.text + "</span></td>" +
+          '<td><button class="btn" data-act="ver" data-tag="' + esc(p.tag) + '">Ver</button></td></tr>';
+      }).join("");
+      return '<div class="table-wrap"><table><thead><tr>' + head + "</tr></thead><tbody>" +
+        (body || '<tr><td colspan="10">Sin jugadores.</td></tr>') + "</tbody></table></div>" +
+        '<div class="muted" style="margin-top:8px;">Tope máximo base de trofeos: 14.000 (los excedentes corresponden a eventos temporales de temporada).</div>';
+    }
+
+    function renderActivity(clan) {
+      const cal = getCal(), r = resetInfo(new Date(), resetMode);
+      const own = (clan.rivals || []).find((x) => x.isOwn);
+      const list = (clan.players || []).filter((p) => p.inRace).slice().sort((a, b) => b.fame - a.fame || b.todayDecks - a.todayDecks);
+      const rows = list.map((p, i) => {
+        const pips = [0, 1, 2, 3].map((k) => '<i class="' + (k < p.todayDecks ? "on" : "") + '"></i>').join("");
+        return '<div class="act-row"><div class="act-rank">' + (i + 1) + '</div><div class="act-av">' + esc(String(p.name || "?").trim().charAt(0).toUpperCase()) + "</div>" +
+          '<div class="act-name"><b>' + esc(p.name) + "</b><span>" + roleName(p.role) + '</span></div><span class="decks">' + pips + " " + p.todayDecks + '</span><span class="medals">🏅 ' + fmt(p.fame) + "</span></div>";
+      }).join("");
+      return '<div class="act-head"><span>' + (cal.isBattleDay ? "Día de batalla " + cal.battleDayNumber : "Día de entrenamiento") + "</span><span>🏅 " + fmt(own ? own.medals : 0) +
+        '</span><span>⏱ <span id="liveCountdown">' + countdown(r.secs) + "</span></span></div>" +
+        '<div class="table-wrap">' + (rows || '<div class="panel">Sin actividad en la guerra en curso.</div>') + "</div>";
+    }
+
+    function renderRegistro(clan) {
+      const weeks = clan.logWeeks || [];
+      if (!weeks.length) return '<div class="panel">La API no entregó registro de guerra para este clan.</div>';
+      const groups = [];
+      weeks.forEach((w) => {
+        let g = groups.find((x) => x.s === w.seasonId);
+        if (!g) { g = { s: w.seasonId, rows: [] }; groups.push(g); }
+        g.rows.push(w);
+      });
+      return '<div class="panel">' + groups.map((g) =>
+        '<div class="season-title">Guerra de Clanes Temporada ' + g.s + '</div><div class="table-wrap"><table><thead><tr><th>Semana</th><th>🏆 Puesto</th><th class="num">⛵ Barco</th><th class="num">Cambio</th><th class="num">Trofeos</th></tr></thead><tbody>' +
+        g.rows.map((w) => "<tr><td>S" + w.week + "</td><td>" + w.rank + '</td><td class="num">' + fmt(w.points) + '</td><td class="num ' + (w.trophyChange > 0 ? "pos" : w.trophyChange < 0 ? "neg" : "") + '">' + (w.trophyChange > 0 ? "+" : "") + w.trophyChange + '</td><td class="num"><b>' + fmt(w.clanScore) + "</b></td></tr>").join("") +
+        "</tbody></table></div>").join("") + "</div>";
+    }
+
+    /* ================= ANÁLISIS POR TEMPORADA (ACTUAL + 1 ANTERIOR) ================= */
+    function buildSeasonAnalysis(clan) {
+      const weeks = clan.logWeeks || [];
+      const hist = clan.history || {};
+      const memberMap = new Map((clan.players || []).map((p) => [p.tag, p]));
+
+      // Detectar IDs de temporada únicos ordenados de más reciente a anterior
+      const seasonIds = [];
+      weeks.forEach((w) => {
+        if (w.seasonId != null && !seasonIds.includes(w.seasonId)) seasonIds.push(w.seasonId);
+      });
+      seasonIds.sort((a, b) => Number(b) - Number(a));
+
+      const curSeasonId = seasonIds[0] != null ? seasonIds[0] : null;
+      const prevSeasonId = seasonIds[1] != null ? seasonIds[1] : null;
+
+      // Semanas de la temporada actual (en orden cronológico 1..4 o 1..5)
+      const curWeeksWithIdx = weeks
+        .map((w, k) => ({ ...w, k }))
+        .filter((w) => w.seasonId === curSeasonId)
+        .sort((a, b) => Number(a.week) - Number(b.week));
+
+      // Semanas de la temporada anterior
+      const prevWeeksWithIdx = weeks
+        .map((w, k) => ({ ...w, k }))
+        .filter((w) => w.seasonId === prevSeasonId)
+        .sort((a, b) => Number(a.week) - Number(b.week));
+
+      // Guardar caché de la temporada anterior por si la API va rotando semanas
+      let prevCache = {};
+      try { prevCache = JSON.parse(lsGet(LS.prevSeason) || "{}"); } catch (e) {}
+      const clanCacheKey = activeTab + "_" + String(prevSeasonId);
+      if (prevSeasonId != null && prevWeeksWithIdx.length >= 4) {
+        const snapPrev = {};
+        Object.keys(hist).forEach((tag) => {
+          const h = hist[tag];
+          const sum = prevWeeksWithIdx.reduce((acc, w) => {
+            const found = (h.rows || []).find((r) => r.k === w.k);
+            return acc + (found ? (found.total || 0) : 0);
+          }, 0);
+          snapPrev[tag] = sum;
+        });
+        prevCache[clanCacheKey] = { seasonId: prevSeasonId, totals: snapPrev };
+        lsSet(LS.prevSeason, JSON.stringify(prevCache));
+      }
+
+      const tags = new Set([...Object.keys(hist), ...memberMap.keys()]);
+      const rows = [];
+      tags.forEach((tag) => {
+        const m = memberMap.get(tag);
+        const h = hist[tag] || { rows: [] };
+        const byK = new Map((h.rows || []).map((e) => [e.k, e]));
+
+        const curVals = curWeeksWithIdx.map((w) => (byK.has(w.k) ? byK.get(w.k).total : null));
+        const seasonSum = curVals.reduce((a, v) => a + (v || 0), 0);
+        const seasonPlayed = curVals.filter((v) => v != null && v > 0).length;
+
+        let prevSum = 0;
+        if (prevWeeksWithIdx.length > 0) {
+          prevSum = prevWeeksWithIdx.reduce((acc, w) => acc + (byK.has(w.k) ? (byK.get(w.k).total || 0) : 0), 0);
+        } else if (prevCache[clanCacheKey] && prevCache[clanCacheKey].totals[tag] != null) {
+          prevSum = prevCache[clanCacheKey].totals[tag];
+        }
+
+        rows.push({
+          tag,
+          name: (m && m.name) || h.name || tag,
+          member: !!m,
+          role: m ? m.role : null,
+          seasonPlayed,
+          seasonSum,
+          prevSum,
+          curVals
+        });
+      });
+
+      // Calcular puesto en temporada anterior (Tops)
+      const rankedPrev = rows.slice().sort((a, b) => b.prevSum - a.prevSum);
+      const prevRankMap = new Map();
+      rankedPrev.forEach((r, idx) => {
+        prevRankMap.set(r.tag, r.prevSum > 0 ? idx + 1 : null);
+      });
+      rows.forEach((r) => { r.prevRank = prevRankMap.get(r.tag); });
+
+      return { curSeasonId, prevSeasonId, curWeeks: curWeeksWithIdx, rows };
+    }
+
+    function renderAnalisis(clan) {
+      const a = buildSeasonAnalysis(clan);
+      if (!a.curWeeks.length) return '<div class="panel">La API no entregó semanas de la temporada actual para analizar.</div>';
+
+      let rows = a.rows.filter((r) => !onlyMembers || r.member);
+      const k = analysisSort.key, dir = analysisSort.dir;
+      rows.sort((x, y) => {
+        let v;
+        if (k === "name") v = String(x.name).localeCompare(String(y.name));
+        else if (k === "r") v = roleLetter(x.role).localeCompare(roleLetter(y.role));
+        else if (k === "p") v = x.seasonPlayed - y.seasonPlayed || x.seasonSum - y.seasonSum;
+        else if (k === "seasonSum") v = x.seasonSum - y.seasonSum;
+        else if (k === "prevSum") v = x.prevSum - y.prevSum;
+        else v = (x.curVals[Number(k)] || 0) - (y.curVals[Number(k)] || 0);
+        return v * dir;
+      });
+
+      const maxSeasonSum = Math.max(1, ...rows.map((r) => r.seasonSum));
+      const maxPrevSum = Math.max(1, ...rows.map((r) => r.prevSum));
+      const bg = (t, v) => !heat ? "" :
+        t === "p" ? "background:rgba(250,204,21," + (0.18 + 0.55 * v) + ")" :
+        t === "c" ? "background:rgba(132,204,22," + (0.2 + 0.55 * v) + ")" :
+        t === "prev" ? "background:rgba(168,85,247," + (0.12 + 0.45 * v) + ")" :
+        "background:rgba(59,130,246," + (0.12 + 0.52 * v) + ")";
+
+      const th = (key, label, cls) =>
+        '<th class="sortable ' + (cls || "") + '" data-act="sortA" data-k="' + key + '">' + label +
+        (analysisSort.key === String(key) ? (analysisSort.dir < 0 ? " ▾" : " ▴") : "") + "</th>";
+
+      const curTotalWeeks = clan.season && clan.season.totalWeeksDetected ? clan.season.totalWeeksDetected : a.curWeeks.length;
+      const weekHeaders = a.curWeeks.map((w, i) => {
+        const isLastColiseo = Number(w.week) === Number(curTotalWeeks) && curTotalWeeks >= 4;
+        const lbl = w.seasonId + "." + w.week + (isLastColiseo ? " 🏟️" : "");
+        return th(i, lbl, "num");
+      }).join("");
+
+      const head =
+        th("name", "Jugador", "sticky-col") +
+        th("r", "Rol") +
+        th("p", "Temp. " + (a.curSeasonId || "")) +
+        th("seasonSum", "Suma T." + (a.curSeasonId || ""), "num") +
+        weekHeaders +
+        (a.prevSeasonId != null ? th("prevSum", "Top T." + a.prevSeasonId + " (Ant.)", "num") : "");
+
+      const body = rows.map((r) => {
+        const prevCell = a.prevSeasonId != null
+          ? '<td class="num" style="' + bg("prev", r.prevSum / maxPrevSum) + '">' +
+            (r.prevSum > 0 ? "<b>" + fmt(r.prevSum) + "</b> <span class='muted'>(#" + r.prevRank + ")</span>" : "—") + "</td>"
+          : "";
+        return '<tr><td class="sticky-col"><b>' + esc(r.name) + "</b></td>" +
+          "<td>" + roleLetter(r.role) + "</td>" +
+          '<td style="' + bg("p", r.seasonPlayed / Math.max(1, a.curWeeks.length)) + '">' + r.seasonPlayed + " / " + a.curWeeks.length + "</td>" +
+          '<td class="num" style="' + bg("c", r.seasonSum / maxSeasonSum) + '"><b>' + fmt(r.seasonSum) + "</b></td>" +
+          r.curVals.map((v) => '<td class="num" style="' + (v == null ? "" : bg("w", Math.min(1, v / 3600))) + '">' + (v == null ? "—" : fmt(v)) + "</td>").join("") +
+          prevCell + "</tr>";
+      }).join("");
+
+      return '<div class="table-wrap"><div class="toggles">' +
+        '<label><input type="checkbox" data-bind="onlyMembers" ' + (onlyMembers ? "checked" : "") + '> Solo miembros actuales</label>' +
+        '<label><input type="checkbox" data-bind="heat" ' + (heat ? "checked" : "") + "> Colores</label>" +
+        '<span class="muted" style="margin-left:auto;">Sumatoria estricta de Temporada ' + esc(a.curSeasonId) + ' (4 o 5 semanas según temporada, última semana = Coliseo 🏟️) + Ranking Temporada anterior.</span>' +
+        "</div><table><thead><tr>" + head + "</tr></thead><tbody>" + body + "</tbody></table></div>";
+    }
+
+    function renderInfo(clan) {
+      const i = clan.info;
+      if (!i) return '<div class="panel">La API no entregó la información de este clan.</div>';
+      const type = ({ open: "Abierto", inviteOnly: "Solo invitación", closed: "Cerrado" })[i.type] || i.type || "—";
+      const item = (ic, t, v) => '<div class="info-item"><span class="ic">' + ic + "</span><div><b>" + t + "</b>" + esc(v) + "</div></div>";
+      return '<div class="panel"><div style="display:flex;gap:12px;align-items:center;">' + shield(0, i.badgeUrl) + "<div><strong>" + esc(i.name) + '</strong><div class="muted">' + esc(i.tag) + " · 🏆 " + fmt(i.clanScore) + " · ⚔️ " + fmt(i.clanWarTrophies) + "</div></div></div>" +
+        '<p style="line-height:1.5;">' + esc(i.description || "Sin descripción.") + "</p>" +
+        '<div class="info-grid">' + item("🏆", "Trofeos", fmt(i.clanScore)) + item("🎯", "Trofeos requeridos", fmt(i.requiredTrophies)) + item("🃏", "Donaciones por semana", fmt(i.donationsPerWeek)) +
+        item("👥", "Miembros", i.membersCount + " / 50") + item("🌎", "Región", i.location || "—") + item("🔒", "Tipo", type) + "</div></div>";
+    }
+
+    /* ================= SISTEMA Y HORARIOS ================= */
+    function renderSistema() {
+      const now = new Date(), r = resetInfo(now, resetMode), cal = getCal();
+      const dayLabel = cal.isBattleDay
+        ? "Día de batalla " + cal.battleDayNumber + "/4 (máx. hoy: " + cal.maxDecksToday + "/16)"
+        : "Día de entrenamiento (lunes a miércoles: registro de tareas fijo hasta el jueves)";
+      const resetLabel = resetMode === "helsinki0" ? "00:00 Helsinki" : "10:00 UTC";
+
+      el("calSummaryBox").textContent = dayLabel + " · Helsinki: " + hm(now, TZ_H) + " | Santiago: " + hm(now, TZ_S) +
+        " · Reinicio " + resetLabel + " (" + r.helsinki + " Helsinki / " + r.santiago + " Santiago) en " + countdown(r.secs);
+
+      const clan = allianceData && allianceData.clans && allianceData.clans.N1;
+      el("seasonSummaryBox").textContent = clan && clan.season
+        ? "Temporada actual: " + (clan.season.seasonId == null ? "-" : clan.season.seasonId) + " · Semana " + clan.season.weekInSeason + "/" + clan.season.totalWeeksDetected + " (" + clan.season.mode + ")"
+        : "Temporada: sincronizando...";
+
+      el("resetSel").value = resetMode;
+      el("scheduleDetails").innerHTML =
+        "<div><strong>Hora Helsinki:</strong> " + hm(now, TZ_H) + "</div>" +
+        "<div><strong>Hora Santiago:</strong> " + hm(now, TZ_S) + "</div>" +
+        "<div><strong>Próximo reinicio:</strong> " + r.utc + " UTC = " + r.helsinki + " Helsinki = " + r.santiago + " Santiago</div>" +
+        "<div><strong>Origen del día de batalla:</strong> " + (cal.source === "api" ? "API oficial" : "reloj local") + "</div>" +
+        "<div><strong>Auto-refresco:</strong> " + (paused ? "Pausado" : "Activo cada 60s") + (lastSync ? " · Última sync: " + lastSync.toLocaleTimeString("es-CL") : "") + "</div>";
+
+      const w = (allianceData && allianceData.warnings) || [];
+      el("warningsBox").innerHTML = w.length ? "<strong>Avisos del Worker</strong>" + w.map((x) => '<div class="notice">' + esc(x) + "</div>").join("") : "";
+    }
+
+    /* ================= MODAL PERFIL DE JUGADOR ================= */
+    const BADGE_ES = {
+      ClanWarWins: ["Victorias en batallas de guerras de clanes", "¡Gana batallas en las guerras de clanes para conseguir esta insignia!"],
+      Classic12Wins: ["Desafío Clásico de 12 victorias", "Consigue 12 victorias en un Desafío Clásico."],
+      Grand12Wins: ["Gran Desafío de 12 victorias", "Consigue 12 victorias en un Gran Desafío."]
+    };
+    function prettyBadge(n) { return String(n || "Insignia").replace(/([a-z])([A-Z0-9])/g, "$1 $2").replace(/_/g, " "); }
+    function badgeCards(prof, showAll) {
+      const list = ((prof && prof.badges) || []).filter((b) => b.progress > 0 || b.level > 0);
+      const top = showAll ? list : list.slice().sort((a, b) => (b.level || 0) - (a.level || 0) || (b.progress || 0) - (a.progress || 0)).slice(0, 12);
+      return top.map((b) => {
+        const es = BADGE_ES[b.name];
+        const lvl = b.level || 1;
+        return {
+          title: es ? es[0] : prettyBadge(b.name),
+          icon: b.iconUrl,
+          val: b.progress != null ? fmt(b.progress) : "Nv." + lvl,
+          desc: es ? es[1] : "Insignia de logro de Clash Royale.",
+          level: lvl,
+          progress: b.progress,
+          target: b.target || null
+        };
+      });
+    }
+    function histChart(rows) {
+      if (!rows.length) return '<div class="muted">Sin semanas en el registro de guerra de la API.</div>';
+      const W = 580, H = 215, L = 48, R = 12, T = 14, B = 52, pw = W - L - R, ph = H - T - B, n = rows.length;
+      const y = (v) => T + ph - (Math.max(0, Math.min(3600, v)) / 3600) * ph, step = pw / n, bw = Math.max(6, step * 0.58);
+      const xc = (i) => L + step * i + step / 2;
+      const guides = [3600, 2600, 1600].map((g) => '<line x1="' + L + '" y1="' + y(g) + '" x2="' + (W - R) + '" y2="' + y(g) + '" stroke="#93b4d6" stroke-dasharray="4"/><text x="4" y="' + (y(g) + 4) + '" font-size="10" fill="#64748b">' + fmt(g) + "</text>").join("");
+      const bars = rows.map((r, i) => '<rect x="' + (xc(i) - bw / 2) + '" y="' + y(r.total) + '" width="' + bw + '" height="' + (T + ph - y(r.total)) + '" fill="#a9c3ee"/>').join("");
+      const ma = rows.map((_, i) => { const s = rows.slice(Math.max(0, i - 2), i + 1); return s.reduce((a, r) => a + r.total, 0) / s.length; });
+      const line = '<polyline fill="none" stroke="#1b6ca8" stroke-width="3" stroke-linejoin="round" points="' + ma.map((v, i) => xc(i) + "," + y(v)).join(" ") + '"/>';
+      const labels = rows.map((r, i) => '<text transform="translate(' + (xc(i) + 4) + "," + (T + ph + 12) + ') rotate(45)" font-size="10" fill="#334155">' + esc(r.label) + "</text>").join("");
+      return '<svg viewBox="0 0 ' + W + " " + H + '" width="100%" style="background:#f8fafc;border:1px solid var(--border);border-radius:6px;"><line x1="' + L + '" y1="' + (T + ph) + '" x2="' + (W - R) + '" y2="' + (T + ph) + '" stroke="#94a3b8"/>' + guides + bars + line + labels + "</svg>";
+    }
+    function playerRows(clan, tag) {
+      const h = (clan.history || {})[tag]; if (!h) return [];
+      return h.rows.map((e) => { const w = (clan.logWeeks || [])[e.k] || {}; return { ...e, label: w.label || "?", rank: w.rank, date: w.date, clanName: clan.config.name }; });
+    }
+    function renderModal(prof, state) {
+      const m = curModal; if (!m) return;
+      const clan = allianceData.clans[m.clanKey], p = clan.players.find((x) => x.tag === m.tag); if (!p) return;
+      const cards = badgeCards(prof, m.showAll); m.cards = cards;
+      const rows = playerRows(clan, m.tag), oldest = rows.slice().reverse();
+      const total = prof ? (prof.wins || 0) + (prof.losses || 0) : 0, pct = (v) => (total ? ((v / total) * 100).toFixed(3) + "%" : "—");
+      const coll = prof && (prof.badges || []).find((b) => /collection/i.test(b.name || ""));
+      const S = (k, v) => "<div><span>" + k + "</span><b>" + v + "</b></div>";
+      const lg = prof && prof.leagueStatistics;
+      let stats = S("Trofeos actuales / PB", formatTrophiesDisplay(p.trophies) + " / " + formatTrophiesDisplay((prof && prof.bestTrophies) || p.trophies)) +
+        S("Arena", esc((prof && prof.arena) || p.arena || "—")) +
+        S("Donaciones semana", fmt(p.donations)) +
+        S("Recibidas", fmt(p.donationsReceived)) +
+        S("Pts semana (en curso)", fmt(p.weekPts) + " · " + p.weekDecks + "/16");
+      if (prof) {
+        stats += S("Victorias", fmt(prof.wins) + " (" + pct(prof.wins) + ")") + S("Derrotas", fmt(prof.losses) + " (" + pct(prof.losses) + ")") + S("Batallas totales", fmt(prof.battleCount)) + S("Victorias de 3 coronas", fmt(prof.threeCrownWins)) +
+          S("Nivel de experiencia", prof.expLevel) + (coll ? S("Nivel de colección", fmt(coll.progress)) : "") + S("Cartas encontradas", fmt(prof.cardsCount)) + S("Total de donaciones", fmt(prof.totalDonations)) + S("Star points", fmt(prof.starPoints)) +
+          S("Victorias en día de guerra", fmt(prof.warDayWins)) + S("Cartas de guerra", fmt(prof.clanCardsCollected)) + S("Máx. victorias desafío", fmt(prof.challengeMaxWins)) + S("Batallas de torneo", fmt(prof.tournamentBattleCount));
+        if (lg && lg.currentSeason) stats += S("Temporada actual", formatTrophiesDisplay(lg.currentSeason.trophies) + " 🏆");
+        if (lg && lg.bestSeason) stats += S("Mejor temporada", formatTrophiesDisplay(lg.bestSeason.trophies) + " 🏆");
+      }
+      const tbl = rows.length ? '<div class="table-wrap"><table><thead><tr><th>S</th><th>R</th><th>C</th><th class="num">🃏</th><th class="num">🏅</th><th class="num">🔨</th><th class="num">⚔</th><th class="num">✅</th></tr></thead><tbody>' +
+        rows.map((r) => "<tr><td>" + esc(r.label) + "</td><td>" + (r.rank == null ? "—" : r.rank) + "</td><td>" + esc(r.clanName) + '<br/><span class="muted">' + esc(r.date || "") + '</span></td><td class="num">' + r.decks + '</td><td class="num">' + fmt(r.fame) + '</td><td class="num">' + r.repair + '</td><td class="num">' + r.boats + '</td><td class="num"><b>' + fmt(r.total) + "</b></td></tr>").join("") + "</tbody></table></div>" : "";
+      el("mBody").innerHTML =
+        '<div class="muted" style="margin-bottom:6px;">' + esc(clan.config.name) + " · " + roleName(p.role) + (state === "loading" ? " · cargando perfil…" : "") + (state === "error" ? ' · <span class="neg">error al cargar perfil</span>' : "") + "</div>" +
+        '<div class="stat-grid">' + stats + "</div>" +
+        "<strong>Insignias interactivas:</strong>" +
+        '<div class="badges-grid">' + (cards.map((b, i) => '<div class="badge-item ' + (m.sel === i ? "sel" : "") + '" data-act="badge" data-i="' + i + '">' + (b.icon ? '<img src="' + esc(b.icon) + '" alt="" onerror="this.style.display=\'none\'">' : "") + '<div class="t">' + esc(b.title) + '</div><div style="color:var(--blue);font-weight:700;">' + esc(b.val) + "</div></div>").join("") || '<span class="muted">' + (state === "loading" ? "Cargando…" : "Sin insignias.") + "</span>") + "</div>" +
+        (prof && (prof.badges || []).length > 12 ? '<button class="btn" data-act="allBadges">' + (m.showAll ? "Ver menos" : "Ver todas") + "</button>" : "") +
+        '<div class="badge-box-info" id="mBadgeDetail">Toca una insignia para ver su detalle.</div>' +
+        "<strong>Historial de Guerra de Clanes (0 a 3.600 pts):</strong>" + '<div style="margin:6px 0 10px;">' + histChart(oldest) + "</div>" + tbl;
+      if (m.sel != null) showBadge(m.sel);
+    }
+    function showBadge(i) {
+      const b = curModal && curModal.cards && curModal.cards[i]; if (!b) return;
+      curModal.sel = i;
+      const pctv = b.target ? Math.min(100, ((b.progress || 0) / b.target) * 100) : 0;
+      el("mBadgeDetail").innerHTML = "<strong>" + esc(b.title) + "</strong><br/>" + esc(b.desc) +
+        (b.progress != null ? "<br/>Nivel " + b.level + (b.target ? ": " + fmt(b.progress) + " / " + fmt(b.target) : ": " + fmt(b.progress)) : "") +
+        (b.target ? '<div class="pbar"><i style="width:' + pctv + '%"></i></div>' : "");
+      document.querySelectorAll(".badge-item").forEach((n, k) => n.classList && n.classList.toggle("sel", k === i));
+    }
+    async function openPlayer(tag) {
+      curModal = { clanKey: activeTab, tag, showAll: false, sel: null, cards: [] };
+      const clan = allianceData.clans[activeTab], p = clan.players.find((x) => x.tag === tag); if (!p) return;
+      el("mTitle").textContent = p.name + " (" + p.tag + ")";
+      el("mSubtitle").textContent = fmt(Math.min(p.trophies, MAX_BASE_TROPHIES)) + " trofeos · " + clan.config.name + " · " + roleName(p.role);
+      el("profileModal").classList.add("open");
+      const c = profileCache.get(tag);
+      if (c && Date.now() - c.t < 300000) { renderModal(c.data, "ok"); return; }
+      renderModal(null, "loading");
+      try {
+        const res = await fetch(getBase() + "/api/player?tag=" + encodeURIComponent(tag), { cache: "no-store" });
+        const data = await res.json();
+        if (!res.ok || !data.ok) throw new Error(data.error || "HTTP " + res.status);
+        profileCache.set(tag, { t: Date.now(), data: data.player });
+        if (curModal && curModal.tag === tag) renderModal(data.player, "ok");
+      } catch (err) { if (curModal && curModal.tag === tag) renderModal(null, "error"); }
+    }
+
+    /* ================= NAVEGACIÓN Y SINCRONIZACIÓN ================= */
+    function openLanding() {
+      inLanding = true;
+      el("landingScreen").style.display = "flex";
+      el("appShell").classList.remove("active");
+    }
+
+    function openSection(tab) {
+      inLanding = false;
+      activeTab = tab;
+      el("landingScreen").style.display = "none";
+      el("appShell").classList.add("active");
+
+      document.querySelectorAll("#quickNav button").forEach((b) => b.classList.toggle("active", b.dataset.tab === tab));
+      el("sec-clan").style.display = CLAN_KEYS.includes(tab) ? "block" : "none";
+      el("sec-sistema").style.display = tab === "sistema" ? "block" : "none";
+
+      if (tab === "sistema") {
+        el("topTitle").textContent = "Sistema y Horarios";
+        el("topSubtitle").textContent = "Sincronización y configuración";
+      }
+      renderAll();
+    }
+
+    function renderAll() {
+      const t = el("liveCountdown");
+      if (t) t.textContent = countdown(resetInfo(new Date(), resetMode).secs);
+      if (inLanding) return;
+      if (CLAN_KEYS.includes(activeTab)) renderClanView();
+      if (activeTab === "sistema") renderSistema();
+    }
+
+    async function syncFromWorker() {
+      const base = getBase(), msgEl = el("syncMsg");
+      if (!base) {
+        if (msgEl) { msgEl.textContent = "Configura primero la URL de tu Worker."; msgEl.style.color = "var(--bad)"; }
+        return;
+      }
+      if (syncing) return;
+      syncing = true;
+      try {
+        if (msgEl) { msgEl.textContent = "Sincronizando..."; msgEl.style.color = "var(--muted)"; }
+        const res = await fetch(base + "/api/alliance?clan=ALL", { cache: "no-store" });
+        const text = await res.text();
+        let data;
+        try { data = JSON.parse(text); } catch (e) { throw new Error("Respuesta inválida (HTTP " + res.status + ")."); }
+        if (!res.ok || !data.ok) throw new Error(data.error || "HTTP " + res.status);
+        allianceData = data;
+        lastSync = new Date();
+        syncMondaySnapshot(data);
+        renderAll();
+        if (msgEl) { msgEl.textContent = "Sincronizado (" + lastSync.toLocaleTimeString("es-CL") + ")"; msgEl.style.color = "var(--ok)"; }
+      } catch (err) {
+        if (msgEl) { msgEl.textContent = "Error: " + err.message; msgEl.style.color = "var(--bad)"; }
+      } finally {
+        syncing = false;
+      }
+    }
+
+    async function testConnection() {
+      const out = el("testResult"), base = getBase();
+      out.textContent = "Probando…";
+      try {
+        const res = await fetch(base + "/api/health?test=1", { cache: "no-store" });
+        const d = await res.json();
+        out.innerHTML = d.ok
+          ? (d.apiTest && d.apiTest.ok
+            ? '<span style="color:var(--ok)">✓ Worker y API OK — clan ' + esc(d.apiTest.clanName) + "</span>"
+            : '<span class="neg">Worker OK, pero la API falló: ' + esc((d.apiTest && d.apiTest.error) || "sin detalle") + "</span>")
+          : '<span class="neg">' + esc(d.error || "Error") + "</span>";
+      } catch (e) {
+        out.innerHTML = '<span class="neg">No se pudo conectar con el Worker: ' + esc(e.message) + "</span>";
+      }
+    }
+
+    // Eventos
+    document.querySelectorAll("[data-open-tab]").forEach((btn) => {
+      btn.addEventListener("click", () => openSection(btn.dataset.openTab));
+    });
+    el("btnGoHome").addEventListener("click", openLanding);
+    document.querySelectorAll("#quickNav button").forEach((btn) => {
+      btn.addEventListener("click", () => openSection(btn.dataset.tab));
+    });
+    el("tasksBarToggle").addEventListener("click", () => {
+      tasksOpen = !tasksOpen;
+      renderTasksBar(activeTab);
+    });
+
+    document.addEventListener("click", (e) => {
+      const t = e.target && e.target.closest ? e.target.closest("[data-act]") : null;
+      if (!t) return;
+      const act = t.dataset.act;
+      if (act === "ver") openPlayer(t.dataset.tag);
+      else if (act === "openRival") openRivalDetail(Number(t.dataset.ridx));
+      else if (act === "closeModal") { el("profileModal").classList.remove("open"); curModal = null; }
+      else if (act === "closeRivalModal") { el("rivalModal").classList.remove("open"); }
+      else if (act === "sub") { activeSub = t.dataset.sub; renderClanView(); }
+      else if (act === "medal") { medalTab = t.dataset.m; renderClanView(); }
+      else if (act === "sortA") { const k = t.dataset.k; analysisSort = { key: k, dir: analysisSort.key === k ? -analysisSort.dir : -1 }; renderClanView(); }
+      else if (act === "cede") {
+        const s = cededSlotsByClan[t.dataset.key];
+        if (s.has(t.dataset.tag)) s.delete(t.dataset.tag);
+        else s.add(t.dataset.tag);
+        saveCeded();
+        renderTasksBar(activeTab);
+      }
+      else if (act === "badge") showBadge(Number(t.dataset.i));
+      else if (act === "allBadges") { curModal.showAll = !curModal.showAll; const c = profileCache.get(curModal.tag); renderModal(c ? c.data : null, "ok"); }
+    });
+
+    document.addEventListener("change", (e) => {
+      const t = e.target; if (!t) return;
+      if (t.id === "minScoreSelector") { minScoreByClan[activeTab] = Number(t.value); lsSet(LS.min, JSON.stringify(minScoreByClan)); renderClanView(); }
+      else if (t.id === "srcSel") { viewSource = t.value; renderAll(); }
+      else if (t.id === "evalSel") { evalMode = t.value; renderClanView(); }
+      else if (t.id === "resetSel") { resetMode = t.value === "helsinki0" ? "helsinki0" : "utc10"; lsSet(LS.reset, resetMode); renderAll(); }
+      else if (t.dataset && t.dataset.bind === "onlyMembers") { onlyMembers = !!t.checked; renderClanView(); }
+      else if (t.dataset && t.dataset.bind === "heat") { heat = !!t.checked; renderClanView(); }
+    });
+
+    el("btnSaveUrl").addEventListener("click", () => {
+      workerUrl = el("workerUrlInput").value.trim().replace(/\/+$/, "");
+      lsSet(LS.url, workerUrl);
+      syncFromWorker();
+    });
+    el("btnSaveCover").addEventListener("click", () => {
+      coverImgUrl = el("coverUrlInput").value.trim() || DEFAULT_COVER_IMG;
+      lsSet(LS.cover, coverImgUrl);
+      applyCoverBackground();
+      el("syncMsg").textContent = "Portada actualizada ✓";
+      el("syncMsg").style.color = "var(--ok)";
+    });
+    el("btnSyncNow").addEventListener("click", () => syncFromWorker());
+    el("btnTest").addEventListener("click", () => testConnection());
+    el("btnToggleLoop").addEventListener("click", (e) => {
+      paused = !paused;
+      e.target.textContent = paused ? "Reanudar 60s" : "Pausar 60s";
+      renderSistema();
+    });
+    el("profileModal").addEventListener("click", (e) => { if (e.target === el("profileModal")) { el("profileModal").classList.remove("open"); curModal = null; } });
+    el("rivalModal").addEventListener("click", (e) => { if (e.target === el("rivalModal")) { el("rivalModal").classList.remove("open"); } });
+
+    // Inicialización
+    el("workerUrlInput").value = workerUrl;
+    el("coverUrlInput").value = coverImgUrl;
+    applyCoverBackground();
+    setInterval(() => { renderAll(); }, 1000);
+    setInterval(() => { if (!paused && getBase()) syncFromWorker(); }, 60000);
+    if (getBase()) syncFromWorker();
+  </script>
+</body>
+</html>
